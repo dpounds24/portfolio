@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Destiny Pounds — Biomedical Data Scientist</title>
+<meta name="description" content="Destiny Pounds — predictive modeling across clinical, wearable, and pharmacological data.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F8F5;
+    --panel:#FFFFFF;
+    --ink:#12203A;
+    --ink-soft:#4B5566;
+    --line:#DDE3DC;
+    --vital:#0E7C7B;
+    --vital-soft:#E3F1EF;
+    --pulse:#D64550;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    margin:0 0 .4em;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:.03em;
+  }
+  a{color:var(--vital);}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  :focus-visible{outline:2px solid var(--vital);outline-offset:3px;}
+
+  /* NAV */
+  header.site-nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(246,248,245,.9);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    max-width:920px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;
+  }
+  .nav-id{display:flex;align-items:center;gap:10px;}
+  .nav-id img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--line);}
+  .nav-id span{font-size:.8rem;text-transform:uppercase;}
+  nav.links{display:flex;gap:20px;font-size:.85rem;}
+  nav.links a{color:var(--ink-soft);text-decoration:none;}
+  nav.links a:hover{color:var(--vital);}
+
+  /* HERO */
+  .hero{padding:72px 0 40px;}
+  .eyebrow{
+    display:inline-block;font-size:.72rem;color:var(--vital);
+    text-transform:uppercase;margin-bottom:18px;padding:4px 10px;
+    border:1px solid var(--vital);border-radius:99px;
+  }
+  .hero h1{font-size:clamp(2rem,4.4vw,3rem);max-width:14ch;}
+  .hero p{max-width:52ch;color:var(--ink-soft);font-size:1.05rem;}
+  .cta-row{display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;
+    padding:11px 18px;border-radius:8px;text-decoration:none;
+    border:1px solid var(--ink);color:var(--ink);
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn.primary{background:var(--ink);color:var(--paper);}
+  .btn:hover{transform:translateY(-2px);}
+
+  /* pulse divider */
+  .pulse{width:100%;height:60px;margin-top:36px;}
+  .pulse path{
+    fill:none;stroke:var(--vital);stroke-width:2;
+    stroke-dasharray:600;stroke-dashoffset:600;
+    animation:draw 3.2s ease-in-out infinite;
+  }
+  @keyframes draw{
+    0%{stroke-dashoffset:600;}
+    45%{stroke-dashoffset:0;}
+    100%{stroke-dashoffset:-600;}
+  }
+
+  /* SECTION shell */
+  section{padding:56px 0;border-top:1px solid var(--line);}
+  .section-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:10px;}
+  .section-head h2{font-size:1.5rem;}
+  .count-tag{font-size:.75rem;color:var(--ink-soft);}
+
+  /* SKILLS */
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+  .chip{
+    font-family:'IBM Plex Mono',monospace;font-size:.75rem;
+    padding:6px 12px;border-radius:99px;border:1px solid var(--line);
+    background:var(--panel);cursor:pointer;color:var(--ink-soft);
+    transition:all .15s ease;
+  }
+  .chip.active{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+  .skill-grid{display:flex;flex-wrap:wrap;gap:8px;}
+  .skill-pill{
+    font-family:'IBM Plex Mono',monospace;font-size:.75rem;
+    padding:8px 14px;border-radius:8px;background:var(--vital-soft);
+    color:var(--vital);
+  }
+
+  /* PROJECTS */
+  .project-grid{display:grid;gap:14px;}
+  details.project{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px 20px;transition:border-color .15s ease;
+  }
+  details.project[open]{border-color:var(--vital);}
+  details.project summary{
+    list-style:none;cursor:pointer;display:flex;gap:18px;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;
+  }
+  details.project summary::-webkit-details-marker{display:none;}
+  .proj-title-row{display:flex;flex-direction:column;gap:4px;flex:1;min-width:220px;}
+  .proj-title-row h3{font-size:1.05rem;}
+  .proj-tagline{color:var(--ink-soft);font-size:.9rem;}
+  .proj-stat{
+    font-family:'IBM Plex Mono',monospace;font-size:1.4rem;color:var(--vital);
+    white-space:nowrap;
+  }
+  .proj-stat small{display:block;font-size:.62rem;color:var(--ink-soft);text-transform:uppercase;font-family:'Inter';}
+  .proj-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+  .tag{font-size:.68rem;font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);border:1px solid var(--line);border-radius:99px;padding:2px 9px;}
+  .proj-body{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line);color:var(--ink-soft);font-size:.92rem;}
+  .proj-links{margin-top:10px;display:flex;gap:14px;font-family:'IBM Plex Mono',monospace;font-size:.78rem;}
+  .arrow{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);transition:transform .2s ease;}
+  details[open] .arrow{transform:rotate(45deg);}
+
+  /* TIMELINE */
+  .timeline{border-left:1px solid var(--line);padding-left:24px;display:flex;flex-direction:column;gap:22px;}
+  .t-item{position:relative;}
+  .t-item::before{
+    content:"";position:absolute;left:-29px;top:6px;width:9px;height:9px;
+    border-radius:50%;background:var(--vital);
+  }
+  .t-item summary{cursor:pointer;list-style:none;display:flex;gap:12px;flex-wrap:wrap;align-items:baseline;}
+  .t-item summary::-webkit-details-marker{display:none;}
+  .t-date{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--vital);min-width:120px;}
+  .t-role{font-weight:600;}
+  .t-org{color:var(--ink-soft);font-size:.85rem;}
+  .t-body{margin:10px 0 0;padding-left:0;color:var(--ink-soft);font-size:.9rem;}
+  .t-body li{margin-bottom:4px;}
+
+  /* PUBLICATIONS */
+  #pub-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;}
+  #pub-list li{font-size:.88rem;color:var(--ink-soft);padding-bottom:10px;border-bottom:1px solid var(--line);}
+  #pub-list li.hidden-pub{display:none;}
+  #pub-list a{color:var(--ink);}
+  .show-more{
+    margin-top:14px;background:none;border:none;font-family:'IBM Plex Mono',monospace;
+    color:var(--vital);cursor:pointer;font-size:.8rem;padding:0;
+  }
+
+  /* EDUCATION */
+  .edu-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:.9rem;flex-wrap:wrap;}
+  .edu-row:last-child{border-bottom:none;}
+  .edu-deg{font-weight:600;}
+  .edu-yr{font-family:'IBM Plex Mono',monospace;color:var(--vital);font-size:.8rem;}
+
+  footer{padding:40px 0 60px;text-align:center;color:var(--ink-soft);font-size:.85rem;}
+  footer a{color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){
+    .pulse path{animation:none;stroke-dashoffset:0;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <div class="nav-id">
+      <img src="assets/img/Pounds, Destiny_4831 2.JPG" alt="" onerror="this.style.display='none'">
+      <span class="mono">Destiny Pounds</span>
+    </div>
+    <nav class="links">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#publications">Publications</a>
+      <a href="mailto:destiny.r.pounds@gmail.com">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero" style="border-top:none;">
+    <span class="eyebrow mono">Biomedical Data Science · ML/AI</span>
+    <h1>Models that flag risk before it becomes an emergency.</h1>
+    <p>PhD researcher building predictive models across clinical, wearable, and pharmacological data — the same toolkit that works anywhere data does.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="#work">View projects</a>
+      <a class="btn" href="https://github.com/dpounds24" target="_blank" rel="noopener">GitHub ↗</a>
+      <a class="btn" href="https://linkedin.com/in/destiny-pounds" target="_blank" rel="noopener">LinkedIn ↗</a>
+    </div>
+    <svg class="pulse" viewBox="0 0 600 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 L140,30 L160,10 L180,50 L200,30 L230,30 L245,5 L260,55 L275,30 L600,30" />
+    </svg>
+  </section>
+
+  <section id="skills">
+    <div class="section-head">
+      <h2>Skills</h2>
+      <span class="count-tag mono">filter by area</span>
+    </div>
+    <div class="chips" id="chipRow">
+      <button class="chip active mono" data-tag="all">All</button>
+      <button class="chip mono" data-tag="ml">ML &amp; Stats</button>
+      <button class="chip mono" data-tag="data">Data Engineering</button>
+      <button class="chip mono" data-tag="fair">Responsible AI</button>
+      <button class="chip mono" data-tag="clinical">Clinical Domain</button>
+    </div>
+    <div class="skill-grid">
+      <span class="skill-pill">Python</span>
+      <span class="skill-pill">R</span>
+      <span class="skill-pill">SQL / PostgreSQL</span>
+      <span class="skill-pill">OMOP CDM</span>
+      <span class="skill-pill">scikit-learn</span>
+      <span class="skill-pill">Time-Series Modeling</span>
+      <span class="skill-pill">AIF360 / Fairness</span>
+      <span class="skill-pill">Tableau · Plotly</span>
+      <span class="skill-pill">HIPAA &amp; Data Governance</span>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <h2>Selected work</h2>
+      <span class="count-tag mono">click to expand</span>
+    </div>
+    <div class="chips" id="projChipRow">
+      <button class="chip active mono" data-tag="all">All</button>
+      <button class="chip mono" data-tag="ml">ML &amp; Stats</button>
+      <button class="chip mono" data-tag="data">Data Engineering</button>
+      <button class="chip mono" data-tag="fair">Responsible AI</button>
+      <button class="chip mono" data-tag="clinical">Clinical Domain</button>
+    </div>
+    <div class="project-grid" id="projectGrid">
+
+      <details class="project" data-tags="ml clinical data">
+        <summary>
+          <div class="proj-title-row">
+            <h3>Early Sepsis Prediction</h3>
+            <div class="proj-tagline">Multimodal EHR + waveform model for early detection</div>
+            <div class="proj-tags"><span class="tag">ML &amp; Stats</span><span class="tag">Data Engineering</span><span class="tag">Clinical</span></div>
+          </div>
+          <div class="proj-stat"><span class="stat-num" data-count="0.93">0</span><small>AUROC</small></div>
+          <span class="arrow">＋</span>
+        </summary>
+        <div class="proj-body">
+          Built and evaluated models across structured EHR, physiological waveform, and combined data using the multisite CHoRUS dataset (OMOP CDM); cohort discovery via Athena/Atlas. Combined-data model reached 0.91 recall / 0.93 AUROC — published in <em>Diagnostics</em> (2025).
+          <div class="proj-links">
+            <a href="https://doi.org/10.3390/diagnostics15212727" target="_blank" rel="noopener">Read the paper ↗</a>
+            <a href="#">Repo (add link) ↗</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="project" data-tags="ml">
+        <summary>
+          <div class="proj-title-row">
+            <h3>Wearable Stress &amp; Affect Forecasting</h3>
+            <div class="proj-tagline">Minute-by-minute mood prediction from sensor streams</div>
+            <div class="proj-tags"><span class="tag">ML &amp; Stats</span><span class="tag">Time-Series</span></div>
+          </div>
+          <div class="proj-stat"><span class="stat-num" data-count="85">0</span><small>% accuracy</small></div>
+          <span class="arrow">＋</span>
+        </summary>
+        <div class="proj-body">
+          Time-series classification and regression models on WESAD wearable sensor data outperformed static baselines for stress, anxiety, and affect prediction (R² 0.68 for negative affect), surfacing physiological predictors of autonomic stress response.
+          <div class="proj-links">
+            <a href="#">Repo (add link) ↗</a>
+            <a href="#">Live demo (add link) ↗</a>
+          </div>
+        </div>
+      </details>
+
+      <details class="project" data-tags="data">
+        <summary>
+          <div class="proj-title-row">
+            <h3>High-Throughput PBPK Modeling</h3>
+            <div class="proj-tagline">Screening drug candidates by pharmacokinetic profile</div>
+            <div class="proj-tags"><span class="tag">Data Engineering</span><span class="tag">Pharma</span></div>
+          </div>
+          <div class="proj-stat"><span class="stat-num" data-count="1815">0</span><small>compounds</small></div>
+          <span class="arrow">＋</span>
+        </summary>
+        <div class="proj-body">
+          Modeled how lipophilicity and permeability drive pharmacokinetics across 1,815 compound variants using non-compartmental analysis (Novartis Beacon of Hope Fellowship); built the visualization pipeline used in a cross-functional presentation.
+        </div>
+      </details>
+
+      <details class="project" data-tags="fair clinical">
+        <summary>
+          <div class="proj-title-row">
+            <h3>Bias Detection &amp; Mitigation Curriculum</h3>
+            <div class="proj-tagline">Trustworthy-AI training for K-12 educators</div>
+            <div class="proj-tags"><span class="tag">Responsible AI</span><span class="tag">Education</span></div>
+          </div>
+          <div class="proj-stat"><span class="stat-num" data-count="9">0</span><small>modules</small></div>
+          <span class="arrow">＋</span>
+        </summary>
+        <div class="proj-body">
+          Authored modules and Python notebooks demonstrating bias detection and mitigation (AIF360), translating fairness concepts and real medical-AI cases into accessible, hands-on lessons.
+          <div class="proj-links">
+            <a href="#">Repo (add link) ↗</a>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="section-head"><h2>Timeline</h2></div>
+    <div class="timeline">
+
+      <details class="t-item">
+        <summary>
+          <span class="t-date mono">2025 — present</span>
+          <span class="t-role">Student Researcher</span>
+          <span class="t-org">· Public Health Informatics &amp; Disparities Lab, Meharry</span>
+        </summary>
+        <ul class="t-body">
+          <li>Run clinical chart reviews to collect and validate patient-level data against research protocols.</li>
+          <li>Manage study data in PostgreSQL, ensuring HIPAA-compliant handling.</li>
+          <li>Build AI/ML pipelines for patient risk stratification; contribute to manuscripts.</li>
+        </ul>
+      </details>
+
+      <details class="t-item">
+        <summary>
+          <span class="t-date mono">2025</span>
+          <span class="t-role">AIM-AHEAD Bridge2AI-CC Scholar</span>
+          <span class="t-org">· Remote consortium</span>
+        </summary>
+        <ul class="t-body">
+          <li>Designed and validated clinical decision-support models with a multidisciplinary network.</li>
+          <li>Used the CHoRUS dataset (OMOP CDM) for real-time acute-care analysis; cohort discovery via Athena/Atlas.</li>
+        </ul>
+      </details>
+
+      <details class="t-item">
+        <summary>
+          <span class="t-date mono">Jun–Aug 2025</span>
+          <span class="t-role">Beacon of Hope Fellow</span>
+          <span class="t-org">· Novartis Biomedical Research, Cambridge MA</span>
+        </summary>
+        <ul class="t-body">
+          <li>High-throughput PBPK modeling across 1,815 compound variants.</li>
+          <li>Applied non-compartmental analysis for early-stage drug development.</li>
+        </ul>
+      </details>
+
+      <details class="t-item">
+        <summary>
+          <span class="t-date mono">2023 – 2025</span>
+          <span class="t-role">Student Researcher, TAIMS</span>
+          <span class="t-org">· Meharry Medical College</span>
+        </summary>
+        <ul class="t-body">
+          <li>Built trustworthy-AI curriculum and bias-detection notebooks (AIF360) for K-12 educators.</li>
+          <li>Conducted literature reviews to support ongoing research.</li>
+        </ul>
+      </details>
+
+      <details class="t-item">
+        <summary>
+          <span class="t-date mono">2019 – 2023</span>
+          <span class="t-role">K-12 Educator, Math &amp; Science</span>
+          <span class="t-org">· South Pike High School</span>
+        </summary>
+        <ul class="t-body">
+          <li>Translated technical concepts into accessible lessons — a skill that carries directly into communicating models to non-technical stakeholders.</li>
+        </ul>
+      </details>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Education</h2></div>
+    <div class="edu-row"><span class="edu-deg">PhD, Biomedical Data Science — Meharry Medical College</span><span class="edu-yr mono">Expected 2028</span></div>
+    <div class="edu-row"><span class="edu-deg">MS, Biomedical Data Science — Meharry Medical College</span><span class="edu-yr mono">2025</span></div>
+    <div class="edu-row"><span class="edu-deg">BS, Physics — Jackson State University</span><span class="edu-yr mono">2017</span></div>
+  </section>
+
+  <section id="publications">
+    <div class="section-head">
+      <h2>Publications &amp; Presentations</h2>
+      <span class="count-tag mono" id="pubCount"></span>
+    </div>
+    <ul id="pub-list">
+      <li>Wang, H., Pounds, D., et al. Early Sepsis Prediction Using Publicly Available Data. <em>Diagnostics</em>, 2025. <a href="https://doi.org/10.3390/diagnostics15212727" target="_blank" rel="noopener">DOI ↗</a></li>
+      <li class="hidden-pub">Pounds, D., Gupta, V. Predicting self-reported stress and affective states using wearable sensor data. AMIA Annual Symposium, Nov 2025.</li>
+      <li class="hidden-pub">Pounds, D., et al. A Compound Property-Driven Framework for Predicting Pharmacokinetics Using High-Throughput PBPK Modeling. Novartis Beacon of Hope Showcase, Aug 2025.</li>
+      <li class="hidden-pub">Pounds, D., et al. Derivation and validation of an EHR-based AI/ML model for early sepsis prediction in clinical practice. AIM-AHEAD Annual Conference, Jul 2025.</li>
+      <li class="hidden-pub">Pounds, D., et al. Derivation and validation of an EHR-based AI/ML model for early sepsis prediction in clinical practice. Bridge2AI All Hands Conference, May 2025.</li>
+      <li class="hidden-pub">Pounds, D., et al. Clinical Chart Review of Patient Characteristics Among Underserved Women Receiving Treatment for Substance Use Disorder. OHDSI Global Symposium, Oct 2026.</li>
+    </ul>
+    <button class="show-more mono" id="showMorePub">Show all 6 ↓</button>
+  </section>
+
+</div>
+
+<footer>
+  <p class="mono">destiny.r.pounds@gmail.com · (601) 248-2179</p>
+  <p><a href="https://github.com/dpounds24" target="_blank" rel="noopener">GitHub</a> · <a href="https://linkedin.com/in/destiny-pounds" target="_blank" rel="noopener">LinkedIn</a></p>
+</footer>
+
+<script>
+  // Tag filtering — drives both skill chips and project chips independently
+  function wireChips(rowId, targetSelector, matchAttr){
+    const row = document.getElementById(rowId);
+    if(!row) return;
+    row.addEventListener('click', e=>{
+      const btn = e.target.closest('.chip');
+      if(!btn) return;
+      [...row.children].forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.dataset.tag;
+      document.querySelectorAll(targetSelector).forEach(card=>{
+        const tags = (card.getAttribute(matchAttr)||'').split(' ');
+        card.style.display = (tag==='all' || tags.includes(tag)) ? '' : 'none';
+      });
+    });
+  }
+  wireChips('projChipRow', '.project', 'data-tags');
+
+  // Count-up stats on scroll into view
+  const counters = document.querySelectorAll('.stat-num');
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        const el = entry.target;
+        const end = parseFloat(el.dataset.count);
+        const isDecimal = el.dataset.count.includes('.');
+        let start = 0;
+        const duration = 900;
+        const t0 = performance.now();
+        function tick(t){
+          const p = Math.min((t - t0)/duration, 1);
+          const val = start + (end-start)*p;
+          el.textContent = isDecimal ? val.toFixed(2) : Math.round(val);
+          if(p<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+        obs.unobserve(el);
+      }
+    });
+  }, {threshold:0.6});
+  counters.forEach(c=>obs.observe(c));
+
+  // Publications show more
+  const showMoreBtn = document.getElementById('showMorePub');
+  showMoreBtn.addEventListener('click', ()=>{
+    document.querySelectorAll('.hidden-pub').forEach(li=>li.classList.remove('hidden-pub'));
+    showMoreBtn.style.display='none';
+  });
+</script>
+
+</body>
+</html>
