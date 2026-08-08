@@ -1,9 +1,11 @@
 # Data Scientist
 
+Technical Skills: Python, R, SQL
+
 # Education
-Physics, BS
-Biomedical Data Science, MS
-Biomedical Data Science, PhD Candidate
+- Physics, BS 
+- Biomedical Data Science, MS 
+- Biomedical Data Science, PhD Candidate 
 
 # Research Experience
 Student Researcher, Public Health Informatics & Disparities Research Lab
