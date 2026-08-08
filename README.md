@@ -5,7 +5,7 @@ Physics, BS
 Biomedical Data Science, MS
 Biomedical Data Science, PhD Candidate
 
-# Work Experience
+# Research Experience
 Student Researcher, Public Health Informatics & Disparities Research Lab
 Meharry Medical College
 - Contributing to the HRSA-funded Maternal Health Informatics and Disparities project, supporting maternal health care for low-income women with substance use disorders.
